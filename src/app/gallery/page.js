@@ -43,13 +43,36 @@ export default function CreationsPage() {
   };
 
   const parseResultUrl = (url) => {
-    try {
-      const parsed = JSON.parse(url);
-      return Array.isArray(parsed) ? parsed : [url];
-    } catch (e) {
-      return [url];
+  if (!url) return [];
+
+  try {
+    const parsed = typeof url === "string"
+      ? JSON.parse(url)
+      : url;
+
+    // New AI clipping format:
+    // { clips: ["/generated/clip1.mp4", "/generated/clip2.mp4"] }
+    if (parsed && Array.isArray(parsed.clips)) {
+      return parsed.clips;
     }
-  };
+
+    // Old format:
+    // ["/generated/clip1.mp4", "/generated/clip2.mp4"]
+    if (Array.isArray(parsed)) {
+      return parsed;
+    }
+
+    // Single URL
+    if (typeof parsed === "string") {
+      return [parsed];
+    }
+
+    return [];
+  } catch (error) {
+    // If resultUrl is already a normal URL
+    return [url];
+  }
+};
 
   if (status === "loading" || loading) {
     return (

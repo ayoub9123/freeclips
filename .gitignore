@@ -1,5 +1,6 @@
 # dependencies
 node_modules
+.next
 /.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -41,3 +42,6 @@ next-env.d.ts
 # prisma
 /prisma/migrations
 /node_modules/.prisma
+
+# Runtime-generated video files are local/ephemeral, not source assets.
+/public/generated/
